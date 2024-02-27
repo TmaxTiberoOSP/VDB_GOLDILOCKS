@@ -29,7 +29,7 @@ cp license.xml $TB_HOME/license/
 ```
 sh $TB_HOME/config/gen_tip.sh
 ```
-4. 포트 설정
+4. 포트 설정 
 ```
 vi $TB_HOME/config/tibero.tip
 vi $TB_HOME/client/config/tbdsn.tbr
