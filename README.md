@@ -8,7 +8,7 @@ GovernmentProject - VDB_GOLDILOCKS
 gunzip tibero7-bin-VDB.tar.gz
 tar xvf tibero7-bin-VDB.tar
 ```
-### 환경설정
+### 환경설정 
 1. 압축을 푼 tibero 디렉토리에서 .profile 생성
 ```
 vim .profile
