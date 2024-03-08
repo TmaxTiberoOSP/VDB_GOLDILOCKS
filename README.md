@@ -105,7 +105,7 @@ vim /etc/security/limits.conf 후 다음 맨 밑에 추가
 cd /goldilocks
 sudo tar -xvzf goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz -C /goldilocks/gold
 ```
-7. 환경 변수 설정
+7. 환경 변수 설정 
 다음은 docker에서 수행
 vim ~/.bashrc 후 다음 맨 밑에 추가
 ```
