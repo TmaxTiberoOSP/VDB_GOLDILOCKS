@@ -20,7 +20,7 @@ export LIBPATH=$TB_HOME/lib:$TB_HOME/client/lib:$LIBPATH
 :wq
 source .profile
 ```
-2. license.xml 복사
+2. license.xml 복사 
 발급받은 license.xml 파일을 복사
 ```
 cp license.xml $TB_HOME/license/
