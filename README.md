@@ -345,4 +345,4 @@ drop java source "EXECUTE_DDL_JDBC";
         2. OBJECT_NAME IN VARCHAR2 : 제거하려는 object의 name
     3. 스펙
         1. 제거하려는 object가 VDB에 등록되어있지 않을 시 에러 발생
-    ``` Exec vdb_goldilocks.unregister_object(‘U1’, ‘T1’); ```
+    ``` Exec vdb_goldilocks.unregister_object(‘U1’, ‘T1’); ``` 
