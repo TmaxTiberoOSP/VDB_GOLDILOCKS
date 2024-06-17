@@ -35,7 +35,7 @@ vi $TB_HOME/config/tibero.tip
 vi $TB_HOME/client/config/tbdsn.tbr
 ```
 위의 두 파일에서 LISTENER_PORT의 번호를 변경 (default: 8629)
-5. 자동 스크립트 사용하여 빌드 및 설치, 구동
+5. 자동 스크립트 사용하여 빌드 및 설치, 구동 
 ```
 cd $TB_HOME/bin
 sh tb_create_db.sh
