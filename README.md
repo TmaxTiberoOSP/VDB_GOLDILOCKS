@@ -40,7 +40,7 @@ vi $TB_HOME/client/config/tbdsn.tbr
 cd $TB_HOME/bin
 sh tb_create_db.sh
 ```
-6. 구축 완료 후 tbsql 수행
+6. 구축 완료 후 tbsql 수행 
 기본 sys 계정 password  : tibero
 기본 tibero 계정 (dba) password : tmax
 tbsql tibero/tmax를 활용해서 tbsql 접속
