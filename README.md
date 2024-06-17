@@ -25,7 +25,7 @@ source .profile
 ```
 cp license.xml $TB_HOME/license/
 ```
-3. gen_tip.sh 수행하여 초기파라미터 관련 파일들 생성
+3. gen_tip.sh 수행하여 초기파라미터 관련 파일들 생성 
 ```
 sh $TB_HOME/config/gen_tip.sh
 ```
