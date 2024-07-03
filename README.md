@@ -8,7 +8,7 @@ GovernmentProject - VDB_GOLDILOCKS
 gunzip tibero7-bin-VDB.tar.gz
 tar xvf tibero7-bin-VDB.tar
 ```
-### 환경설정 
+### 환경설정  
 1. 압축을 푼 tibero 디렉토리에서 .profile 생성
 ```
 vim .profile
@@ -218,6 +218,61 @@ gsql TIBERO tmax
 # 쿼리 수행 여부 확인
 gSQL> select * from dual;
 ```
+
+## TrainDB 설치 메뉴얼
+1. 도커 컨테이너 구축
+```
+FROM ubuntu:20.04
+
+RUN apt-get update -y
+RUN apt-get install -y openjdk-11-jdk
+RUN apt-get install -y maven
+RUN apt-get install -y sqlite3
+RUN apt-get install -y vim
+RUN apt-get install -y git
+RUN apt-get install -y python3.8
+RUN apt-get install -y python3.8-dbg python3.8-dev python3.8-venv python3.8-distutils python3.8-lib2to3 python3.8-gdbm python3.8-tk python3.8-full
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
+RUN apt install -y python3-pip
+RUN python3.8 -m pip install --upgrade pip
+```
+2. traindb 다운로드
+구축한 컨테이너 내에서 실행 
+```
+git clone --recurse-submodules https://github.com/traindb-project/traindb.git
+```
+3. 다운받은 파일 빌드 
+```
+cd traindb
+mvn package
+```
+4. 파일 압축 해제
+생성된 파일의 버전명을 확인 
+```
+cd traindb-assembly/target 
+tar xvfz traindb-3.0-SNAPSHOT.tar.gz
+```
+5. 환경 변수 설정
+vim ~/.bashrc 후 다음 맨 밑에 추가
+PREFIX 는 models 의 상위 디렉토리로 지정해야 이후 예시 쿼리를 수정 없이 실행 가능
+```
+export TRAINDB_HOME=/workspace/traindb/traindb-assembly/target/traindb-3.0-SNAPSHOT
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export TRAINDB_PREFIX=/workspace/traindb/traindb-assembly/target/traindb-3.0-SNAPSHOT
+source ~/.bashrc
+```
+6. 필요 라이브러리 설치
+```
+cd /workspace/traindb/traindb-model
+pip install --no-deps -r requirements.txt
+```
+7. traindb 서버 시작
+```
+cd $TRAINDB_HOME/bin
+./start-traindb.sh
+./stop-traindb.sh
+```
+
 ## Virtual DB(VDB) 설치 매뉴얼
 1. Java Gateway 설정
 $TB_HOME/client/bin 의 tbJavaGW.zip 압축 해제
