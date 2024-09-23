@@ -70,7 +70,7 @@ sudo docker exec -it --privileged sunDB /bin/bash
 sudo apt-get update
 sudo apt-get install openjdk-8-jdk vim unzip
 ```
-5. 시스템 변수 세팅 
+5. 시스템 변수 세팅
 ```
 sudo docker exec -it --privileged sunDB /bin/bash 명령어로 docker 에 접속 후 다음 설정
 ```
