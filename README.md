@@ -401,3 +401,5 @@ drop java source "EXECUTE_DDL_JDBC";
     3. 스펙
         1. 제거하려는 object가 VDB에 등록되어있지 않을 시 에러 발생
     ``` Exec vdb_goldilocks.unregister_object(‘U1’, ‘T1’); ```
+
+----
