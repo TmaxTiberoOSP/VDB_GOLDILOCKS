@@ -1,6 +1,6 @@
 # VDB_GOLDILOCKS     
 GovernmentProject - VDB_GOLDILOCKS
-## Tibero 설치 매뉴얼  
+## Tibero 설치 매뉴얼
 ### VDB 내용이 반영된 tibero 7 바이너리 다운로드
 예) tibero7-bin-VDB.tar.gz 다운로드
 1. 바이너리 압축 해제
@@ -70,7 +70,7 @@ sudo docker exec -it --privileged sunDB /bin/bash
 sudo apt-get update
 sudo apt-get install openjdk-8-jdk vim unzip
 ```
-5. 시스템 변수 세팅 
+5. 시스템 변수 세팅
 ```
 sudo docker exec -it --privileged sunDB /bin/bash 명령어로 docker 에 접속 후 다음 설정
 ```
@@ -401,3 +401,5 @@ drop java source "EXECUTE_DDL_JDBC";
     3. 스펙
         1. 제거하려는 object가 VDB에 등록되어있지 않을 시 에러 발생
     ``` Exec vdb_goldilocks.unregister_object(‘U1’, ‘T1’); ```
+
+----
