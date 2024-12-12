@@ -106,7 +106,47 @@ public class ExecuteTrainJDBC{
 /
 CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_TRAIN_JDBC FOR EXECUTE_TRAIN_JDBC;
 /
+CREATE OR REPLACE AND RESOLVE Java SOURCE NAMED "EXECUTE_TURBO_JDBC"
+AS
+import java.sql.*;
+import java.io.*;
 
+public class ExecuteTurboJDBC {
+    public static String ExecuteTurbo(String ddl, String ip, String port,
+            String id, String passwd) throws Exception {
+
+        String url = "jdbc:turbograph:" + ip + ":" + port + ":demodb:::";
+
+        try{
+            Class.forName("turbograph.jdbc.driver.TURBOGRAPHDriver");
+            Connection conn = DriverManager.getConnection(url, id, passwd);
+            conn.setAutoCommit(false);
+
+            PreparedStatement pstmt = conn.prepareStatement(ddl);
+            if(pstmt.executeUpdate() == 0) {
+                conn.commit();
+                pstmt.close();
+                conn.close();
+                return "DDL SUCCESS";
+            }
+            pstmt.close();
+            conn.close();
+            return "Input query is not DDL";
+        }
+        catch (Exception e) {
+            String errMsg = e.getMessage();
+            switch (errMsg) {
+                case "The statement has produced a ResultSet":
+                    return "Input query is not DDL";
+                default:
+                    return errMsg.substring(0, Math.min(100, errMsg.length()));
+            }
+        }
+    }
+}
+/
+CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_TURBO_JDBC FOR EXECUTE_TURBO_JDBC;
+/
 CREATE OR REPLACE VIEW SYSCAT.DBA_VDB_OBJECTS
 (OWNER, REMOTE_OBJECT_OWNER, REMOTE_OBJECT_NAME, REMOTE_OBJECT_TYPE)
 AS
