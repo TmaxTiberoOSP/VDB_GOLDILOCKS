@@ -20,13 +20,13 @@ CREATE TABLE _VDB_OBJECTS(
 	REMOTE_OBJECT_TYPE		VARCHAR2(128)
 );
 
-CREATE OR REPLACE AND RESOLVE Java SOURCE NAMED "EXECUTE_DDL_JDBC"
+CREATE OR REPLACE AND RESOLVE Java SOURCE NAMED "EXECUTE_GOLD_JDBC"
 AS
 import java.sql.*;
 import java.io.*;
 
-public class ExecuteDDLJDBC {
-    public static String ExecuteDDL(String ddl, String ip, String port,
+public class ExecuteGoldJDBC {
+    public static String ExecuteGold(String ddl, String ip, String port,
             String id, String passwd) throws Exception {
 		try
 		{
@@ -59,8 +59,7 @@ public class ExecuteDDLJDBC {
 	}
 }
 /
-
-CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_DDL_JDBC FOR EXECUTE_DDL_JDBC;
+CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_GOLD_JDBC FOR EXECUTE_GOLD_JDBC;
 
 CREATE OR REPLACE VIEW SYSCAT.DBA_VDB_OBJECTS
 (OWNER, REMOTE_OBJECT_OWNER, REMOTE_OBJECT_NAME, REMOTE_OBJECT_TYPE)
