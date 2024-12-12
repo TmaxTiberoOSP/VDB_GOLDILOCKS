@@ -1,6 +1,6 @@
 # VDB_GOLDILOCKS  
 GovernmentProject - VDB_GOLDILOCKS
-## Tibero 설치 매뉴얼
+## 1. Tibero 설치 매뉴얼
 ### VDB 내용이 반영된 tibero 7 바이너리 다운로드
 예) tibero7-bin-VDB.tar.gz 다운로드
 1. 바이너리 압축 해제
@@ -45,7 +45,8 @@ sh tb_create_db.sh
 기본 tibero 계정 (dba) password : tmax
 tbsql tibero/tmax를 활용해서 tbsql 접속
 tbboot, tbdown 으로 tibero를 부팅시키거나, 끌수 있다.
-## SunDB 설치 매뉴얼
+
+## 2. SunDB 설치 매뉴얼
 1. docker 설치 - ubuntu 20.04 이미지 설치
 ```
 sudo docker pull homebrew/ubuntu20.04
@@ -97,10 +98,9 @@ vim /etc/security/limits.conf 후 다음 맨 밑에 추가
 [username] hard memlock unlimited
 ```
 6. Goldilocks 설치
-다음은 docker 가 아닌 터미널에서 수행
-아래 링크에서 goldilocks 다운로드
-<https://drive.google.com/file/d/1uc2dOqv8q0iCsF1f5Z40rMm9P9YcvcG1/view?usp=drive_web>
-다운로드 된 폴더에서 sudo cp goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz /goldilocks/goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz
+다음은 docker 가 아닌 터미널에서 수행 <br>
+[링크](https://drive.google.com/file/d/1uc2dOqv8q0iCsF1f5Z40rMm9P9YcvcG1/view?usp=drive_web) 에서 파일 다운로드 <br>
+sudo cp goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz /goldilocks/goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz
 ```
 cd /goldilocks
 sudo tar -xvzf goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz -C /goldilocks/gold
@@ -119,7 +119,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 source ~/.bashrc
 ```
 8. License 발급
-license 파일이 없는 경우, startup 시에 에러가 발생하기 때문에, 선재소프트 담당 연구원님께 데모 라이센스를 요청해야 한다.
+license 파일이 없는 경우, startup 시에 에러가 발생하기 때문에, 선재소프트 담당 연구원님께 데모 라이센스를 요청해야 한다. <br>
 라이센스 발급을 위해 필요한 정보는 다음과 같다. (docker container 안에서 수행)
 ```
 hostname
@@ -128,7 +128,7 @@ lscpu
 cat /proc/meminfo
 free -h
 ```
-받은 라이센스 파일은 $GOLDILOCKS_HOME/license 에 넣으면 된다.
+받은 라이센스 파일은 $GOLDILOCKS_HOME/license 에 넣으면 된다. <br>
 받은 라이선스 파일 이름은 license로 만든다.
 9. DB 생성 및 구동
 DB 생성
@@ -150,7 +150,7 @@ gsql --as sysdba --import $GOLDILOCKS_HOME/admin/standalone/InformationSchema.sq
 gsql --as sysdba --import $GOLDILOCKS_HOME/admin/standalone/PerformanceViewSchema.sql
 ```
 10. Listener 구동
-리스너를 따로 켜야만 원격으로 DB에 접속 가능하기 때문에 DBLink를 위해서는 필수적으로 리스너를 실행해야 한다.
+리스너를 따로 켜야만 원격으로 DB에 접속 가능하기 때문에 DBLink를 위해서는 필수적으로 리스너를 실행해야 한다. <br>
 리스너 on/off는 다음과 같이 할 수 있다.
 ```
 # listener ON
@@ -219,7 +219,7 @@ gsql TIBERO tmax
 gSQL> select * from dual;
 ```
 
-## TrainDB 설치 메뉴얼
+## 3. TrainDB 설치 메뉴얼
 1. 도커 컨테이너 구축
 ```
 FROM ubuntu:20.04
@@ -253,7 +253,7 @@ cd traindb-assembly/target
 tar xvfz traindb-3.0-SNAPSHOT.tar.gz
 ```
 5. 환경 변수 설정
-vim ~/.bashrc 후 다음 맨 밑에 추가
+vim ~/.bashrc 후 다음 맨 밑에 추가 <br>
 PREFIX 는 models 의 상위 디렉토리로 지정해야 이후 예시 쿼리를 수정 없이 실행 가능
 ```
 export TRAINDB_HOME=/workspace/traindb/traindb-assembly/target/traindb-3.0-SNAPSHOT
@@ -273,7 +273,54 @@ cd $TRAINDB_HOME/bin
 ./stop-traindb.sh
 ```
 
-## Virtual DB(VDB) 설치 매뉴얼
+## 4) turboGraph 설치 매뉴얼
+1. 도커 컨테이너 구축
+```
+cd turbograph-v3
+git checkout remotes/origin/main
+cd docker
+docker build . -t turbograph-image
+./run-docker-example.sh <database folder> <source data folder>
+```
+2. turboGraph 빌드
+```
+cd /turbograph-v3
+cd tbgpp-common/third_party/velox
+./scripts/setup-ubuntu.sh
+
+cd /turbograph-v3
+mkdir build
+cd build/
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
+ninja
+```
+3. 데이터 삽입
+```
+cd build
+./tbgpp-graph-store/store <storage size>
+
+cd build
+./tbgpp-graph-store/catalog_test_catalog_server <db_dir>
+
+cd /source-data/sf1
+./import.sh
+```
+4. api-broker 빌드
+```
+cd api-broker
+./build.sh
+```
+5. api-broker 설치
+```
+cd build_x86_64_release
+sh API-BROKER-1.0.0.0000-Linux.x86_64.sh
+```
+6. api-broker 실행
+```
+brokerutil start 
+```
+
+## Virtual DB(VDB) 설정 매뉴얼
 1. Java Gateway 설정
 $TB_HOME/client/bin 의 tbJavaGW.zip 압축 해제
 $TB_HOME/client/bin/tbJavaGW/lib에 goldlocks JDBC 추가
