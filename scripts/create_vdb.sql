@@ -9,8 +9,11 @@
 CREATE TABLE _VDB_CONN_INFO (
     VDB_IP      VARCHAR2(20) PRIMARY KEY,
     VDB_PORT    VARCHAR2(20),
+    SOURCE_IP   VARCHAR2(20),
+    SOURCE_PORT VARCHAR2(20),
     ID          VARCHAR2(100),
-    PASSWORD    VARCHAR2(100)
+    PASSWORD    VARCHAR2(100),
+    REMOTE_DB   VARCHAR2(100)
 );
 
 CREATE TABLE _VDB_OBJECTS(
@@ -60,6 +63,49 @@ public class ExecuteGoldJDBC {
 }
 /
 CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_GOLD_JDBC FOR EXECUTE_GOLD_JDBC;
+/
+CREATE OR REPLACE AND RESOLVE Java SOURCE NAMED "EXECUTE_TRAIN_JDBC"
+AS
+import java.sql.*;
+import java.io.*;
+
+public class ExecuteTrainJDBC{
+    public static String ExecuteTrain(String ddl, String ip, String port, String source_ip, String source_port,
+            String id, String passwd) throws Exception {
+
+        String url = "jdbc:traindb:tibero:thin:@" + source_ip + ":" + source_port + ":" + "tibero?server.host=" + ip + "&" + "server.port=" + port;
+
+        try{
+            Class.forName("traindb.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, id, passwd);
+            conn.setAutoCommit(false);
+            Statement stmt = conn.createStatement();
+            if(!stmt.execute(ddl)){
+                conn.commit();
+                stmt.close();
+                conn.close();
+                return "DDL SUCCESS";
+            }
+            conn.rollback();
+            stmt.close();
+            conn.close();
+            return "Input query is not DDL";
+
+        }
+        catch (Exception e) {
+            String errMsg = e.getMessage();
+            switch (errMsg) {
+                case "The statement has produced a ResultSet":
+                    return "Input query is not DDL";
+                default:
+                    return errMsg.substring(0, Math.min(100, errMsg.length()));
+            }
+        }
+    }
+}
+/
+CREATE OR REPLACE PUBLIC SYNONYM EXECUTE_TRAIN_JDBC FOR EXECUTE_TRAIN_JDBC;
+/
 
 CREATE OR REPLACE VIEW SYSCAT.DBA_VDB_OBJECTS
 (OWNER, REMOTE_OBJECT_OWNER, REMOTE_OBJECT_NAME, REMOTE_OBJECT_TYPE)
