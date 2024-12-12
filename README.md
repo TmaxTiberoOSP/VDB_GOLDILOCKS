@@ -3,13 +3,13 @@ GovernmentProject - VDB_GOLDILOCKS
 ## 1. Tibero 설치 매뉴얼
 ### VDB 내용이 반영된 tibero 7 바이너리 다운로드
 예) tibero7-bin-VDB.tar.gz 다운로드
-1. 바이너리 압축 해제
+1. **바이너리 압축 해제**
 ```
 gunzip tibero7-bin-VDB.tar.gz
 tar xvf tibero7-bin-VDB.tar
 ```
 ### 환경설정  
-1. 압축을 푼 tibero 디렉토리에서 .profile 생성
+1. **압축을 푼 tibero 디렉토리에서 .profile 생성**
 ```
 vim .profile
 export TB_HOME=/home/(username)/tibero(version)  -> ex) export TB_HOME=/data/test/tibero7
@@ -20,47 +20,48 @@ export LIBPATH=$TB_HOME/lib:$TB_HOME/client/lib:$LIBPATH
 :wq
 source .profile
 ```
-2. license.xml 복사 
+2. **license.xml 복사** <br> 
 발급받은 license.xml 파일을 복사
 ```
 cp license.xml $TB_HOME/license/
 ```
-3. gen_tip.sh 수행하여 초기파라미터 관련 파일들 생성 
+3. **gen_tip.sh 수행하여 초기파라미터 관련 파일들 생성** 
 ```
 sh $TB_HOME/config/gen_tip.sh
 ```
-4. 포트 설정 
+4. **포트 설정** <br>
+아래 두 파일에서 LISTENER_PORT의 번호를 변경 (default: 8629)
 ```
 vi $TB_HOME/config/tibero.tip
 vi $TB_HOME/client/config/tbdsn.tbr
 ```
-위의 두 파일에서 LISTENER_PORT의 번호를 변경 (default: 8629)
-5. 자동 스크립트 사용하여 빌드 및 설치, 구동 
+
+5. **자동 스크립트 사용하여 빌드 및 설치, 구동** 
 ```
 cd $TB_HOME/bin
 sh tb_create_db.sh
 ```
-6. 구축 완료 후 tbsql 수행 
-기본 sys 계정 password  : tibero
-기본 tibero 계정 (dba) password : tmax
-tbsql tibero/tmax를 활용해서 tbsql 접속
+6. **구축 완료 후 tbsql 수행**<br> 
+기본 sys 계정 password  : tibero <br>
+기본 tibero 계정 (dba) password : tmax <br>
+tbsql tibero/tmax를 활용해서 tbsql 접속 <br>
 tbboot, tbdown 으로 tibero를 부팅시키거나, 끌수 있다.
 
 ## 2. SunDB 설치 매뉴얼
-1. docker 설치 - ubuntu 20.04 이미지 설치
+1. **docker 설치 - ubuntu 20.04 이미지 설치**
 ```
 sudo docker pull homebrew/ubuntu20.04
 ```
-2. 이미지 이름 확인
+2. **이미지 이름 확인**
 ```
 sudo docker images
 sudo mkdir /goldilocks
 ```
-3. 컨테이너 생성
+3. **컨테이너 생성**
 ```
 sudo docker run --name sunDB -p 22581:22581 -v /goldilocks:/goldilocks –shm-size=2G -i -t -d homebrew/ubuntu20.04
 ```
-4. 컨테이너 구동 확인
+4. **컨테이너 구동 확인**
 ```
 sudo docker ps
 # 안 켜져 있으면, sudo docker start [컨테이너 이름]
@@ -71,7 +72,7 @@ sudo docker exec -it --privileged sunDB /bin/bash
 sudo apt-get update
 sudo apt-get install openjdk-8-jdk vim unzip
 ```
-5. 시스템 변수 세팅
+5. **시스템 변수 세팅**
 ```
 sudo docker exec -it --privileged sunDB /bin/bash 명령어로 docker 에 접속 후 다음 설정
 ```
@@ -97,16 +98,17 @@ vim /etc/security/limits.conf 후 다음 맨 밑에 추가
 [username] soft memlock unlimited
 [username] hard memlock unlimited
 ```
-6. Goldilocks 설치
+6. **Goldilocks 설치** <br>
 다음은 docker 가 아닌 터미널에서 수행 <br>
 [링크](https://drive.google.com/file/d/1uc2dOqv8q0iCsF1f5Z40rMm9P9YcvcG1/view?usp=drive_web) 에서 파일 다운로드 <br>
-sudo cp goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz /goldilocks/goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz
+
 ```
+sudo cp goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz /goldilocks/goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz
 cd /goldilocks
 sudo tar -xvzf goldilocks-server-20c.20.1.26-linux-x86_64.tar.gz -C /goldilocks/gold
 ```
-7. 환경 변수 설정
-다음은 docker에서 수행
+7. **환경 변수 설정**<br>
+다음은 docker에서 수행<br>
 vim ~/.bashrc 후 다음 맨 밑에 추가
 ```
 export GOLDILOCKS_HOME=/goldilocks/gold/goldilocks_home
@@ -118,8 +120,9 @@ export GOLDILOCKS_LISTEN_PORT=22581
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 source ~/.bashrc
 ```
-8. License 발급
-license 파일이 없는 경우, startup 시에 에러가 발생하기 때문에, 선재소프트 담당 연구원님께 데모 라이센스를 요청해야 한다. <br>
+8. **License 발급**<br>
+license 파일이 없는 경우, startup 시에 에러가 발생하기 때문에, <br>
+선재소프트 담당 연구원님께 데모 라이센스를 요청해야 한다. <br>
 라이센스 발급을 위해 필요한 정보는 다음과 같다. (docker container 안에서 수행)
 ```
 hostname
@@ -129,8 +132,9 @@ cat /proc/meminfo
 free -h
 ```
 받은 라이센스 파일은 $GOLDILOCKS_HOME/license 에 넣으면 된다. <br>
-받은 라이선스 파일 이름은 license로 만든다.
-9. DB 생성 및 구동
+받은 라이선스 파일 이름은 license로 만든다.<br>
+
+9. **DB 생성 및 구동**
 DB 생성
 ```
 gcreatedb
@@ -149,8 +153,11 @@ gsql --as sysdba --import $GOLDILOCKS_HOME/admin/standalone/DictionarySchema.sql
 gsql --as sysdba --import $GOLDILOCKS_HOME/admin/standalone/InformationSchema.sql
 gsql --as sysdba --import $GOLDILOCKS_HOME/admin/standalone/PerformanceViewSchema.sql
 ```
-10. Listener 구동
-리스너를 따로 켜야만 원격으로 DB에 접속 가능하기 때문에 DBLink를 위해서는 필수적으로 리스너를 실행해야 한다. <br>
+<br>
+
+10. **Listener 구동**<br>
+리스너를 따로 켜야만 원격으로 DB에 접속 가능하기 때문에<br>
+DBLink를 위해서는 필수적으로 리스너를 실행해야 한다. <br>
 리스너 on/off는 다음과 같이 할 수 있다.
 ```
 # listener ON
@@ -158,7 +165,7 @@ glsnr --start
 # listener OFF
 glsnr --stop
 ```
-11. Database 삭제
+11. **Database 삭제**<br>
 혹시라도 DB 설치를 잘못한 경우, 이를 삭제하고 다시 설치해야 한다.
 ```
 rm -rf $GOLDILOCKS_DATA/db/*.dbf
@@ -166,35 +173,35 @@ rm -rf $GOLDILOCKS_DATA/wal/*.ctl
 rm -rf $GOLDILOCKS_DATA/wal/*.log
 rm -rf $GOLDILOCKS_DATA/archive_log/*.log
 ```
-12. Data 테이블스페이스 생성
+12. **Data 테이블스페이스 생성**
 ```
 --- SYNTAX ---
 --- CREATE TABLESPACE [테이블스페이스 명] DATAFILE [데이터파일 명] SIZE [크기];
 --- EXAMPLE ---
 gSQL> CREATE TABLESPACE SAMPLE_DATA_TBS DATAFILE 'sample_data_01.dbf' SIZE 1G;
 ```
-13. 데이터 파일 추가
+13. **데이터 파일 추가**
 ```
 --- SYNTAX ---
 --- ALTER TABLESPACE [테이블스페이스 명] ADD DATAFILE [데이터파일 명] SIZE [크기];
 --- EXAMPLE ---
 gSQL> ALTER TABLESPACE SAMPLE_DATA_TBS ADD DATAFILE 'sample_data_02.dbf' SIZE 1G;
 ```
-14. TEMP 테이블 스페이스 생성
+14. **TEMP 테이블 스페이스 생성**
 ```
 --- SYNTAX ---
 --- CREATE TEMPORARY TABLESPACE [테이블스페이스 명] MEMORY [데이터파일 명] SIZE [크기];
 --- EXAMPLE ---
 gSQL> CREATE TEMPORARY TABLESPACE SAMPLE_TEMP_TBS MEMORY 'sample_temp_01' SIZE 1G;
 ```
-15. 데이터 파일 추가
+15. **데이터 파일 추가**
 ```
 --- SYNTAX ---
 --- ALTER TABLESPACE [테이블스페이스 명] ADD MEMORY [데이터파일 명] SIZE [크기];
 --- EXAMPLE ---
 gSQL> ALTER TABLESPACE SAMPLE_DATA_TBS ADD MEMORY 'sample_temp_02.dbf' SIZE 1G;
 ```
-16. 유저 생성
+16. **유저 생성**
 ```
 --- SYNTAX ---
 --- CREATE USER user_identifier IDENTIFIED BY password
@@ -204,14 +211,14 @@ gSQL> ALTER TABLESPACE SAMPLE_DATA_TBS ADD MEMORY 'sample_temp_02.dbf' SIZE 1G;
 --- EXAMPLE ---
 gSQL > create user TIBERO identified by tmax DEFAULT TABLESPACE SAMPLE_DATA_TBS TEMPORARY TABLESPACE SAMPLE_TEMP_TBS;
 ```
-17. 유저 권한 설정
+17. **유저 권한 설정**
 ```
 --- SYNTAX ---
 --- GRANT ALL ON DATABASE TO [username];
 --- EXAMPLE ---
 gSQL> grant all on database to TIBERO;
 ```
-18. 로그인 확인
+18. **로그인 확인**
 ```
 # session 접속 시도
 gsql TIBERO tmax
@@ -220,7 +227,7 @@ gSQL> select * from dual;
 ```
 
 ## 3. TrainDB 설치 메뉴얼
-1. 도커 컨테이너 구축
+1. **도커 컨테이너 구축**
 ```
 FROM ubuntu:20.04
 
@@ -236,23 +243,23 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
 RUN apt install -y python3-pip
 RUN python3.8 -m pip install --upgrade pip
 ```
-2. traindb 다운로드
+2. **traindb 다운로드**
 구축한 컨테이너 내에서 실행 
 ```
 git clone --recurse-submodules https://github.com/traindb-project/traindb.git
 ```
-3. 다운받은 파일 빌드 
+3. **다운받은 파일 빌드** 
 ```
 cd traindb
 mvn package
 ```
-4. 파일 압축 해제
+4. **파일 압축 해제**<br>
 생성된 파일의 버전명을 확인 
 ```
 cd traindb-assembly/target 
 tar xvfz traindb-3.0-SNAPSHOT.tar.gz
 ```
-5. 환경 변수 설정
+5. **환경 변수 설정**<br>
 vim ~/.bashrc 후 다음 맨 밑에 추가 <br>
 PREFIX 는 models 의 상위 디렉토리로 지정해야 이후 예시 쿼리를 수정 없이 실행 가능
 ```
@@ -261,20 +268,20 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export TRAINDB_PREFIX=/workspace/traindb/traindb-assembly/target/traindb-3.0-SNAPSHOT
 source ~/.bashrc
 ```
-6. 필요 라이브러리 설치
+6. **필요 라이브러리 설치**<br>
 ```
 cd /workspace/traindb/traindb-model
 pip install --no-deps -r requirements.txt
 ```
-7. traindb 서버 시작
+7. **traindb 서버 시작**
 ```
 cd $TRAINDB_HOME/bin
 ./start-traindb.sh
 ./stop-traindb.sh
 ```
 
-## 4) turboGraph 설치 매뉴얼
-1. 도커 컨테이너 구축
+## 4. turboGraph 설치 매뉴얼
+1. **도커 컨테이너 구축**
 ```
 cd turbograph-v3
 git checkout remotes/origin/main
@@ -282,7 +289,7 @@ cd docker
 docker build . -t turbograph-image
 ./run-docker-example.sh <database folder> <source data folder>
 ```
-2. turboGraph 빌드
+2. **turboGraph 빌드**
 ```
 cd /turbograph-v3
 cd tbgpp-common/third_party/velox
@@ -294,7 +301,7 @@ cd build/
 cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
 ninja
 ```
-3. 데이터 삽입
+3. **데이터 삽입**
 ```
 cd build
 ./tbgpp-graph-store/store <storage size>
@@ -305,65 +312,108 @@ cd build
 cd /source-data/sf1
 ./import.sh
 ```
-4. api-broker 빌드
+4. **api-broker 빌드**
 ```
 cd api-broker
 ./build.sh
 ```
-5. api-broker 설치
+5. **api-broker 설치**
 ```
 cd build_x86_64_release
 sh API-BROKER-1.0.0.0000-Linux.x86_64.sh
 ```
-6. api-broker 실행
+6. **api-broker 실행**
 ```
 brokerutil start 
 ```
 
 ## Virtual DB(VDB) 설정 매뉴얼
-1. Java Gateway 설정
-$TB_HOME/client/bin 의 tbJavaGW.zip 압축 해제
-$TB_HOME/client/bin/tbJavaGW/lib에 goldlocks JDBC 추가
-$GOLDILOCKS_HOME/lib 에 있음 (goldilocks6,7,8.jar)
+### Java Gateway 설정 
+1. **각 DB jdbc 다운로드** 
+- sunDB : $GOLDILOCKS_HOME/lib 에 위치 (테스트는 goldilocks6.jar 으로 진행)
+- trainDB : $TRAINDB_HOME/share/traindb 에 위치
+- turboGraph : 담당자님께 별도 요청
+
+2. **각 DB jdbc 추가**<br>
+$TB_HOME/client/bin/tbJavaGW/lib에 jdbc들 추가
+
+3. **java gateway config 설정**<br>
+$TB_HOME/client/bin/tbJavaGW/jgw.cfg
+- sunDB
 ```
-sudo cp $GOLDILOCKS_HOME/lib/goldilocks6.jar $TB_HOME/client/bin/tbJavaGW/lib/goldilocks6.jar
-# 테스트는 goldilocks6.jar 으로 진행함
+DATABASE=JDBC30                                                       
+DATASOURCE_CLASS_NAME=sunje.goldilocks.jdbc.GoldilocksDataSource     
 ```
-$TB_HOME/client/bin/tbJavaGW/jgw.cfg 수정
+- trainDB
 ```
-DATABASE=JDBC30
-DATASOURCE_CLASS_NAME=sunje.goldilocks.jdbc.GoldilocksDataSource
-XA_DATASOURCE_CLASS_NAME=sunje.goldilocks.jdbc.GoldilocksXADataSource
+DATABASE=JDBC30                                  
+DATASOURCE_CLASS_NAME=traindb.ds.SimpleDataSource
 ```
-$TB_HOME/client/bin/tbJavaGW/tbgw 수정
+- turboGraph
 ```
-java classpath에 goldilocks jdbc 추가
-gold = ./lib/goldilocks6.jar
-#맨 밑 -classpath 에 $gold 추가
+DATABASE=JDBC30                                                    
+DATASOURCE_CLASS_NAME=turbograph.jdbc.driver.TURBOGRAPHDataSource  
+```
+4. **traindb properties 파일 추가**<br>
+trainDB의 jdbc 연결을 위해서는 별도의 properties 파일이 필요 <br>
+$TB_HOME/client/bin/tbJavaGW 에 traindb-jdbc.properties 로 생성하여 <br>
+아래 정보를 입력
+```
+TRAINDB_SERVER_HOST=                                           
+TRAINDB_SERVER_PORT=                      
+TRAINDB_URL_PROTOCOL=jdbc:traindb:tibero:thin         
+```
+
+5. **gateway 수정**<br>
+$TB_HOME/client/bin/tbJavaGW/tbgw <br>
+```
+java classpath에 각 db jdbc 추가
+gold=./lib/goldilocks6.jar 
+train=./lib/traindb-jdbc-0.1-SNAPSHOT.jar:./traindb-jdbc.properties
+turbo=./lib/JDBC-1.0.0.0008-turbograph.jar
+```
+```
+#맨 밑 -classpath 에 각 path 추가
 예) java …. –classpath $mysqljdbc: …. $hive:$gold:. ….
 ```
-$TB_HOME/client/bin/tbJavaGW 에서 ./tbgw 수행
-2. Java EPA 설정
+$TB_HOME/client/bin/tbJavaGW 에서 각 게이트웨이 수행
+
+### Java EPA 설정
+1. **tip 파일 설정**<br>
 $TB_HOME/config/$TB_SID.tip 파일에 아래 설정 추가 (보통 tibero.tip 파일)
 ```
 _PSM_BOOT_JEPA=Y
 JAVA_CLASS_PATH=$your_java_directory
 ```
-아무 빈 directory나 java class path로 지정가능 (필자는 $TB_HOME/instance/tibero/ 로 설정)
+아무 빈 directory나 java class path로 지정가능<br>
+(필자는 $TB_HOME/instance/tibero/ 로 설정)<br>
+
+2. **dsn 파일 설정**<br>
 $TB_HOME/client/config/tbdsn.tbr 파일에 아래 추가
 ```
 epa = ((EXTPROC=(LANG=JAVA)(LISTENER=(HOST=localhost)(PORT=9390))))
 ```
-$TB_HOME/client/epa/java/lib/goldilocks6.jar 파일 추가
+3. **jdbc 추가**<br>
+$TB_HOME/client/epa/java/lib에 각 db jdbc 추가<br>
+
+4. **epa 파일 수정**<br>
 $TB_HOME/client/bin/tbjavaepa 파일 수정
 ```
-#Classpath아래에 gold=${javaepahome}/lib/goldilocks6.jar 변수 추가
+#Classpath아래에 각 db jdbc 추가
+gold=${javaepahome}/lib/goldilocks6.jar
+turbo=${javaepahome}/lib/JDBC-1.0.0.0008-turbograph.jar
+train=${javaepahome}/lib/traindb-jdbc-0.1-SNAPSHOT.jar
+```
+```
 아래 java 실행시 class path 목록에 gold추가
-예) exec java …. –classpath …. $epa:$config:$gold $mainclass ….
+예) exec java …. –classpath …. $epa:$config:$gold:$train:$turbo $mainclass ….
 ```
 ## Tibero 설정
-위의 EPA설정을 마무리한 후에
-create_vdb.sql, pkg_vdb_goldilocks.sql, _pkg_vdb_goldilocks.sql 스크립트를 sys계정으로 차례대로 수행해야한다.
+위의 EPA설정을 마무리한 후에 sys 계정르로 아래 스크립트 수행
+- create_vdb.sql
+- pkg_vdb_goldilocks.sql
+- _pkg_vdb_goldilocks.sql
+
 ```
 Test
 -- goldilocks ip, goldilocks port, goldilocks id, goldilocks password 순서로 인자를 준다.
