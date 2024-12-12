@@ -39,6 +39,19 @@ IS
     PROCEDURE "UNREGISTER_TRAIN_CONNECTION_INFO"
     PRAGMA BUILTIN('pkg_dbms_virtual_database__unregister_train_connection_info');
 
+    PROCEDURE "REGISTER_TURBO_CONNECTION_INFO"(
+        VDB_IP IN VARCHAR2,
+        VDB_PORT IN VARCHAR2,
+        ID IN VARCHAR2,
+        PASSWD IN VARCHAR2
+    )
+    PRAGMA BUILTIN('pkg_dbms_virtual_database__register_turbo_connection_info');
+
+    PROCEDURE "UNREGISTER_TURBO_CONNECTION_INFO"
+    PRAGMA BUILTIN('pkg_dbms_virtual_database__unregister_turbo_connection_info');
+
+    PROCEDURE "EXECUTE_TURBO_DDL"(
+        DDL IN VARCHAR2);
 END;
 /
 
